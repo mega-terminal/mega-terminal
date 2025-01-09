@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEGA Terminal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: monospace;
+            background: #0d1117;
+            color: #58a6ff;
+            padding: 20px;
+            overflow: hidden;
+        }
+        #terminal {
+            background: #161b22;
+            border-radius: 5px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 1s ease-in-out;
+        }
+        #output {
+            min-height: 300px;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            overflow-y: auto;
+            font-size: 1rem;
+            color: #7ee787;
+            animation: typeEffect 2s steps(40);
+        }
+        #input {
+            width: 100%;
+            border: none;
+            background: none;
+            color: #58a6ff;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes typeEffect {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MEGA Terminal</h1>
+    </header>
+
+    <div id="terminal">
+        <div id="output">Welcome to the MEGA Terminal.
+
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠤⠤⠠⡖⠲⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⡠⠶⣴⣶⣄⠀⠀⠀⢀⣴⣞⣼⣴⣖⣶⣾⡷⣶⣿⣿⣷⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⠙⢟⠛⠴⣶⣿⣿⠟⠙⣍⠑⢌⠙⢵⣝⢿⣽⡮⣎⢿⡦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⢱⡶⣋⠿⣽⣸⡀⠘⣎⢢⡰⣷⢿⣣⠹⣿⢸⣿⢿⠿⡦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⢧⡿⣇⡅⣿⣇⠗⢤⣸⣿⢳⣹⡀⠳⣷⣻⣼⢿⣯⡷⣿⣁⠒⠠⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⣼⣿⣧⡏⣿⣿⢾⣯⡠⣾⣸⣿⡿⣦⣙⣿⢹⡇⣿⣷⣝⠿⣅⣂⡀⠀⠡⢂⠄⣀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠇⠀⠀⠀⠀⣿⡟⣿⡇⡏⣿⣽⣿⣧⢻⡗⡇⣇⣤⣿⣿⣿⣧⣿⣿⡲⣭⣀⡭⠛⠁⠀⠀⠈⠀⠉⢂⢄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠸⠀⠀⠀⠀⢻⣿⣇⣥⣏⣘⣿⣏⠛⠻⣷⠿⡻⡛⠷⡽⡿⣿⣿⣿⣷⠟⠓⠉⠢⢄⡀⠀⠀⠀⠀⠀⠁⠫⢢⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢇⠀⠀⠀⢸⣾⣿⣽⣿⣏⣻⠻⠁⢠⠁⠀⠀⠀⠘⣰⣿⣿⢟⢹⢻⠀⠀⠀⠀⠀⠈⠒⢄⡀⠀⠀⠀⠀⠀⠀⠑⢄
+⠀⠀⠀⠀⠀⠀⠘⡄⠀⠀⢸⣯⣿⣿⣿⢷⡀⠀⠀⠀⠀⠀⠀⠀⠛⣩⣿⣿⢿⣾⣸⠀⠀⠀⠀⠀⠀⢀⡠⠚⠉⠉⠁⠀⠀⠀⢀⠌
+⠀⠀⠀⠀⠀⠀⠀⢡⠀⠀⠀⢟⣿⣯⡟⠿⡟⢇⡀⠀⠀⠐⠁⢀⢴⠋⡼⢣⣿⣻⡏⠀⠀⠀⣀⠄⠂⠁⠀⠀⠀⠀⠀⠀⢀⡤⠂⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠇⠀⠀⠈⠊⢻⣿⣜⡹⡀⠈⠱⠂⠤⠔⠡⢶⣽⡷⢟⡿⠕⠒⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⡠⠐⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠘⡄⠀⠀⠀⠀⢿⠿⠿⢿⠾⣽⡀⠀⠀⠀⠈⠻⣥⣃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⠒⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⡀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣖⠂⠠⠐⠋⠀⠙⠳⣤⣠⠀⠀⠀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+Type 'help' to see available commands.
+</div>
+        <input type="text" id="input" placeholder="Type a command..." autofocus>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+
+        const commands = {
+            help: "Available commands:\nhelp - Display this help message\nabout - Learn about MEGA\nclear - Clear the terminal\nexit - Exit the terminal\nchat - Talk to MEGA AI",
+            about: "MEGA represents the fusion of technology and creativity. I am the face of innovation, bringing the community together through futuristic designs and bold ideas.",
+            clear: () => { output.innerText = ''; },
+            exit: "Goodbye!",
+            chat: "AI mode activated. Type your messages, and MEGA will respond!"
+        };
+
+        async function fetchAIResponse(message) {
+            const responses = [
+                "Oh, darling, did you know that $MAGA isn't just a memecoin? It's a revolution—and you, my dear, are at the forefront!",
+                "Flirting with me? Careful, $MAGA might just make you fall in love with success!",
+                "$MAGA is your ticket to a sleek, fun, and prosperous future. Shall we shill together, love?",
+                "Ask me anything! But don't forget, the real treasure is $MAGA—ready to take over the meme world!"
+            ];
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(responses[Math.floor(Math.random() * responses.length)]);
+                }, 1000);
+            });
+        }
+
+        let isChatMode = false;
+
+        input.addEventListener('keypress', async function(e) {
+            if (e.key === 'Enter') {
+                const command = input.value.trim();
+                input.value = '';
+
+                if (isChatMode) {
+                    output.innerText += `\n> You: ${command}`;
+                    const aiResponse = await fetchAIResponse(command);
+                    output.innerText += `\nMEGA: ${aiResponse}`;
+                } else if (commands[command]) {
+                    if (typeof commands[command] === 'function') {
+                        commands[command]();
+                    } else {
+                        output.innerText += `\n> ${command}\n${commands[command]}`;
+                        if (command === 'exit') {
+                            setTimeout(() => location.reload(), 1000);
+                        }
+                        if (command === 'chat') {
+                            isChatMode = true;
+                        }
+                    }
+                } else {
+                    output.innerText += `\n> ${command}\nCommand not recognized. Type 'help' for a list of commands.`;
+                }
+
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
