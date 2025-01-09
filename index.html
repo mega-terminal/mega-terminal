@@ -1,143 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEGA Terminal</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: monospace;
-            background: #0d1117;
-            color: #58a6ff;
-            padding: 20px;
-            overflow: hidden;
-        }
-        #terminal {
-            background: #161b22;
-            border-radius: 5px;
-            padding: 20px;
-            max-width: 800px;
-            margin: 20px auto;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            animation: fadeIn 1s ease-in-out;
-        }
-        #output {
-            min-height: 300px;
-            white-space: pre-wrap;
-            margin-bottom: 10px;
-            overflow-y: auto;
-            font-size: 1rem;
-            color: #7ee787;
-            animation: typeEffect 2s steps(40);
-        }
-        #input {
-            width: 100%;
-            border: none;
-            background: none;
-            color: #58a6ff;
-            font-family: inherit;
-            font-size: 1rem;
-            outline: none;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes typeEffect {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <title>Degen Tarot of Chaos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="A degenerate, neon-blasted tarot reading experience for crypto apes." />
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* 
+      RESET & BASE
+    */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      font-family: 'Exo 2', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* 
+      ANIMATED NEON BACKGROUND
+    */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(120deg, #ff0080, #ff8c00, #ff0080);
+      background-size: 400% 400%;
+      animation: neonBg 10s ease infinite;
+    }
+    @keyframes neonBg {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 
+      CONTAINER
+    */
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* 
+      HEADER / TITLE 
+    */
+    header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* NEON GLOW ANIMATION for DEGEN TAROT */
+    header h1 {
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      position: relative;
+      display: inline-block;
+      animation: glowPulse 2s infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% {
+        text-shadow: 0 0 5px #ff0080, 0 0 10px #ff0080, 0 0 20px #ff0080;
+        color: #fff;
+      }
+      100% {
+        text-shadow: 0 0 10px #ff0080, 0 0 20px #ff0080, 0 0 40px #ff0080;
+        color: #ffccff;
+      }
+    }
+
+    .subtext {
+      font-size: 1rem;
+      color: #ffcccc;
+      max-width: 600px;
+      margin: 0 auto 0.75rem;
+      text-shadow: 0 0 3px rgba(255,0,128,0.5);
+    }
+
+    .disclaimer {
+      font-size: 0.85rem;
+      color: #ff4d4d;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 
+      USER QUESTION
+    */
+    .question-section {
+      margin: 1.5rem 0 1rem;
+      text-align: center;
+    }
+    .question-section input {
+      width: 80%;
+      max-width: 380px;
+      padding: 0.75rem 1rem;
+      border: 2px solid #ff0080;
+      background: #111;
+      color: #fff;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+      transition: box-shadow 0.3s ease;
+    }
+    .question-section input:focus {
+      box-shadow: 0 0 10px rgba(255,0,128,0.4);
+    }
+
+    /* 
+      SHINING ANIMATED BUTTONS
+    */
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .btn-group button {
+      position: relative;
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ff0080;
+      background: #111;
+      border: 2px solid #ff0080;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .btn-group button::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -50%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+    }
+    .btn-group button:hover::before {
+      animation: shineAnim 1s forwards;
+    }
+    @keyframes shineAnim {
+      0%   { left: -50%; }
+      50%  { left: 100%; }
+      100% { left: 100%; }
+    }
+    .btn-group button:hover {
+      color: #fff;
+    }
+
+    /* 
+      RESULTS 
+    */
+    #results {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto 4rem;
+    }
+
+    /* 
+      CARD BLOCK with 3D FLIP 
+      + MOBILE-FRIENDLY TAP ANIMATION 
+    */
+    .card-container {
+      perspective: 1000px; 
+      width: 100%;
+      max-width: 600px;
+      margin: 1rem 0;
+    }
+    .card-block {
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #ff0080;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255,0,128,0.2);
+      padding: 1rem;
+      transform-style: preserve-3d;
+      transition: transform 0.8s, scale 0.2s;
+      position: relative;
+    }
+    .card-front {
+      position: relative;
+      backface-visibility: hidden;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffecf9;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card-arcana {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #ffa7d1;
+      margin-bottom: 0.75rem;
+    }
+    .card-meaning {
+      font-size: 1rem;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    .card-back {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ff0080;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      backface-visibility: hidden;
+      transform: rotateY(180deg);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    /* Hover flip (desktop) */
+    .card-block:hover {
+      transform: rotateY(180deg);
+    }
+
+    /* Tap/Click scale for mobile */
+    .card-block:active {
+      scale: 0.97; /* subtle press animation */
+    }
+
+    /* 
+      CONCLUSION 
+    */
+    .conclusion {
+      background: rgba(255, 0, 128, 0.1);
+      border: 2px dashed #ff0080;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      color: #ffb3d1;
+      font-style: italic;
+      max-width: 600px;
+      animation: fadeIn 0.5s ease forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* 
+      FOOTER 
+    */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #888;
+      background: #111;
+      padding: 0.75rem 0;
+    }
+    footer a {
+      color: #ff8c00;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <!-- HEADER -->
     <header>
-        <h1>MEGA Terminal</h1>
+      <h1>DEGEN TAROT</h1>
+      <p class="subtext">
+        Enter the neon filth. Flip your fate.
+      </p>
+      <div class="disclaimer">
+        NSFW - Vulgar - Offensive - NOT Financial Advice.<br/>
+        If you’re easily offended, GTFO. Otherwise, let’s do this.
+      </div>
     </header>
 
-    <div id="terminal">
-        <div id="output">Welcome to the MEGA Terminal.
-
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠤⠤⠠⡖⠲⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⡠⠶⣴⣶⣄⠀⠀⠀⢀⣴⣞⣼⣴⣖⣶⣾⡷⣶⣿⣿⣷⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢸⠀⠀⠀⠙⢟⠛⠴⣶⣿⣿⠟⠙⣍⠑⢌⠙⢵⣝⢿⣽⡮⣎⢿⡦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⢱⡶⣋⠿⣽⣸⡀⠘⣎⢢⡰⣷⢿⣣⠹⣿⢸⣿⢿⠿⡦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⢧⡿⣇⡅⣿⣇⠗⢤⣸⣿⢳⣹⡀⠳⣷⣻⣼⢿⣯⡷⣿⣁⠒⠠⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⣼⣿⣧⡏⣿⣿⢾⣯⡠⣾⣸⣿⡿⣦⣙⣿⢹⡇⣿⣷⣝⠿⣅⣂⡀⠀⠡⢂⠄⣀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠇⠀⠀⠀⠀⣿⡟⣿⡇⡏⣿⣽⣿⣧⢻⡗⡇⣇⣤⣿⣿⣿⣧⣿⣿⡲⣭⣀⡭⠛⠁⠀⠀⠈⠀⠉⢂⢄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠸⠀⠀⠀⠀⢻⣿⣇⣥⣏⣘⣿⣏⠛⠻⣷⠿⡻⡛⠷⡽⡿⣿⣿⣿⣷⠟⠓⠉⠢⢄⡀⠀⠀⠀⠀⠀⠁⠫⢢⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢇⠀⠀⠀⢸⣾⣿⣽⣿⣏⣻⠻⠁⢠⠁⠀⠀⠀⠘⣰⣿⣿⢟⢹⢻⠀⠀⠀⠀⠀⠈⠒⢄⡀⠀⠀⠀⠀⠀⠀⠑⢄
-⠀⠀⠀⠀⠀⠀⠘⡄⠀⠀⢸⣯⣿⣿⣿⢷⡀⠀⠀⠀⠀⠀⠀⠀⠛⣩⣿⣿⢿⣾⣸⠀⠀⠀⠀⠀⠀⢀⡠⠚⠉⠉⠁⠀⠀⠀⢀⠌
-⠀⠀⠀⠀⠀⠀⠀⢡⠀⠀⠀⢟⣿⣯⡟⠿⡟⢇⡀⠀⠀⠐⠁⢀⢴⠋⡼⢣⣿⣻⡏⠀⠀⠀⣀⠄⠂⠁⠀⠀⠀⠀⠀⠀⢀⡤⠂⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠇⠀⠀⠈⠊⢻⣿⣜⡹⡀⠈⠱⠂⠤⠔⠡⢶⣽⡷⢟⡿⠕⠒⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⡠⠐⠁⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠘⡄⠀⠀⠀⠀⢿⠿⠿⢿⠾⣽⡀⠀⠀⠀⠈⠻⣥⣃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⠒⠁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡀⡀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣖⠂⠠⠐⠋⠀⠙⠳⣤⣠⠀⠀⠀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
-Type 'help' to see available commands.
-</div>
-        <input type="text" id="input" placeholder="Type a command..." autofocus>
+    <!-- QUESTION INPUT -->
+    <div class="question-section">
+      <input id="userQuestion" type="text" placeholder="Ask your degenerate question: e.g. 'Wen Lambo?'" />
     </div>
 
-    <script>
-        const output = document.getElementById('output');
-        const input = document.getElementById('input');
+    <!-- BUTTONS -->
+    <div class="btn-group">
+      <button onclick="drawCardsWithQuestion(1)">Draw 1 Card</button>
+      <button onclick="drawCardsWithQuestion(3)">Draw 3 Cards</button>
+      <button onclick="drawCardsWithQuestion(5)">Draw 5 Cards</button>
+    </div>
 
-        const commands = {
-            help: "Available commands:\nhelp - Display this help message\nabout - Learn about MEGA\nclear - Clear the terminal\nexit - Exit the terminal\nchat - Talk to MEGA AI",
-            about: "MEGA represents the fusion of technology and creativity. I am the face of innovation, bringing the community together through futuristic designs and bold ideas.",
-            clear: () => { output.innerText = ''; },
-            exit: "Goodbye!",
-            chat: "AI mode activated. Type your messages, and MEGA will respond!"
-        };
+    <!-- RESULTS -->
+    <div id="results"></div>
 
-        async function fetchAIResponse(message) {
-            const responses = [
-                "Oh, darling, did you know that $MAGA isn't just a memecoin? It's a revolution—and you, my dear, are at the forefront!",
-                "Flirting with me? Careful, $MAGA might just make you fall in love with success!",
-                "$MAGA is your ticket to a sleek, fun, and prosperous future. Shall we shill together, love?",
-                "Ask me anything! But don't forget, the real treasure is $MAGA—ready to take over the meme world!"
-            ];
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(responses[Math.floor(Math.random() * responses.length)]);
-                }, 1000);
-            });
+    <!-- FOOTER -->
+    <footer>
+      &copy; 2025 Degen Tarot of Chaos. Built by degenerate apes, for degenerate apes.
+    </footer>
+  </div>
+
+  <script>
+    /************************************************************
+     * FULL 78-CARD DEGEN TAROT DECK
+     ************************************************************/
+    const DEGEN_TAROT_DECK = [
+      /* 22 Major Arcana */
+      { arcana: "Major", number: 0,  name: "The Paper-Handed Fool",      meaning: "A clueless ape destined to sell at the worst possible moment..." },
+      { arcana: "Major", number: 1,  name: "The Hopium Magician",       meaning: "Conjures illusions of 100x gains from hot air—some folks buy in, others end up rekt." },
+      { arcana: "Major", number: 2,  name: "The Sleeper Whale",         meaning: "Lurks quietly with massive bags, waiting to crush your hopes at 4 a.m. with a monumental dump." },
+      { arcana: "Major", number: 3,  name: "The Meme Empress",          meaning: "Fertile ground for endless Shiba clones; births fresh tokens as often as you refresh Twitter." },
+      { arcana: "Major", number: 4,  name: "The Emperor of Rugs",       meaning: "Wears a crown of exit scams; his only legacy is the tears of degens who believed his roadmap." },
+      { arcana: "Major", number: 5,  name: "The Degen Hierophant",      meaning: "The self-proclaimed crypto guru preaching 'HODL!' while secretly flipping tokens faster than you can blink." },
+      { arcana: "Major", number: 6,  name: "The Lovers (of FOMO)",      meaning: "A passionate, toxic romance between you and your next meme coin—bliss or betrayal?" },
+      { arcana: "Major", number: 7,  name: "The Chariot to the Moon",   meaning: "An unstoppable rocket ride or a flaming crash—depends on whether whales feel merciful today." },
+      { arcana: "Major", number: 8,  name: "Strength in Diamond Hands", meaning: "Grit your teeth through red candles, or bail like a coward and watch the chart 10x without you." },
+      { arcana: "Major", number: 9,  name: "The Hermit of Cold Storage",meaning: "Disappears offline, hugging private keys, ignoring all FUD until the next bull run." },
+      { arcana: "Major", number: 10, name: "Wheel of (Mis)Fortune",     meaning: "Spin the wheel—maybe you land on Lambo, maybe you get rugged. The house always laughs." },
+      { arcana: "Major", number: 11, name: "The Bound Ape (Hanged Man)",meaning: "Over-leveraged, trapped, upside down on every trade, praying for a green miracle." },
+      { arcana: "Major", number: 12, name: "Death by Gas Fees",         meaning: "The sudden end to your holdings… courtesy of insane transaction costs. RIP." },
+      { arcana: "Major", number: 13, name: "Temperance of Shitposts",   meaning: "Balance your degenerate memes with a sliver of reality or drown in your own hype." },
+      { arcana: "Major", number: 14, name: "The Devilish Dev",          meaning: "A contract wizard who might vanish with your liquidity at any moment—sign here if you dare." },
+      { arcana: "Major", number: 15, name: "The Tower Dump",            meaning: "A catastrophic sell-off that wipes smug grins off faces in seconds." },
+      { arcana: "Major", number: 16, name: "The Star (Twitter Clout)",  meaning: "Social media hype can anoint you or cancel you overnight. Tread lightly." },
+      { arcana: "Major", number: 17, name: "The Moon (Cock Tease)",     meaning: "So close to orgasmic gains, yet might remain a limp, mocking illusion." },
+      { arcana: "Major", number: 18, name: "The Sun (of Gains)",        meaning: "A blaze of bullish candles—watch out you don’t get blinded by euphoria." },
+      { arcana: "Major", number: 19, name: "The Judgement (FUD Reaper)",meaning: "A wave of anxious voices decides your fate—collective mania or panic?" },
+      { arcana: "Major", number: 20, name: "The World (Exit Liquidity)",meaning: "The grand finale—either moon or forever serve as someone else’s exit liquidity." },
+
+      /* SUIT OF APES (14) */
+      { arcana: "Minor", suit: "Apes", rank: "Ace",  name: "Ace of Apes", meaning: "A primal surge—ape in or forever regret being a wuss." },
+      { arcana: "Minor", suit: "Apes", rank: "2",    name: "2 of Apes",   meaning: "Two clueless maniacs hyping each other into ill-advised presales." },
+      { arcana: "Minor", suit: "Apes", rank: "3",    name: "3 of Apes",   meaning: "A sweaty circle jerk of confidence—might spark a mini-pump." },
+      { arcana: "Minor", suit: "Apes", rank: "4",    name: "4 of Apes",   meaning: "Hoarding bananas too closely, ignoring signs you should maybe take profits." },
+      { arcana: "Minor", suit: "Apes", rank: "5",    name: "5 of Apes",   meaning: "Tribal conflict; half screaming 'HODL,' half screaming 'SELL, FOOL!'" },
+      { arcana: "Minor", suit: "Apes", rank: "6",    name: "6 of Apes",   meaning: "Victory through group mania—band together, buy together, possibly dump together." },
+      { arcana: "Minor", suit: "Apes", rank: "7",    name: "7 of Apes",   meaning: "Overextension, too many random tokens—get ready to meltdown." },
+      { arcana: "Minor", suit: "Apes", rank: "8",    name: "8 of Apes",   meaning: "Swift synergy; apes orchestrating short squeezes or hype pumps on Telegram." },
+      { arcana: "Minor", suit: "Apes", rank: "9",    name: "9 of Apes",   meaning: "Bloated greed; you want the entire jungle, you filthy maniac." },
+      { arcana: "Minor", suit: "Apes", rank: "10",   name: "10 of Apes",  meaning: "Peak euphoria—everyone’s celebrating, so watch the exit." },
+      { arcana: "Minor", suit: "Apes", rank: "Page", name: "Page of Apes",meaning: "A naive influencer spamming 'moon soon, guys!' with zero research." },
+      { arcana: "Minor", suit: "Apes", rank: "Knight",name: "Knight of Apes",meaning: "A reckless gambler, galloping into every presale until inevitably rekt." },
+      { arcana: "Minor", suit: "Apes", rank: "Queen",name: "Queen of Apes",meaning: "A cunning matriarch, YOLOing but controlling lesser apes with a smirk." },
+      { arcana: "Minor", suit: "Apes", rank: "King", name: "King of Apes", meaning: "The alpha gorilla—his calls alone can pump entire chats or crush them." },
+
+      /* SUIT OF INUS (14) */
+      { arcana: "Minor", suit: "Inus", rank: "Ace",  name: "Ace of Inus", meaning: "New dog coin—pure potential or pure trash, no in-between." },
+      { arcana: "Minor", suit: "Inus", rank: "2",    name: "2 of Inus",  meaning: "Two dog tokens merging into a bizarre Frankenstein meme." },
+      { arcana: "Minor", suit: "Inus", rank: "3",    name: "3 of Inus",  meaning: "First community push, illusions of 'We’re the next Shiba!'" },
+      { arcana: "Minor", suit: "Inus", rank: "4",    name: "4 of Inus",  meaning: "Clutching dog tokens in your wallet, blind loyalty overshadowing fundamentals." },
+      { arcana: "Minor", suit: "Inus", rank: "5",    name: "5 of Inus",  meaning: "Discord drama—everyone barking, devs vanish for a day." },
+      { arcana: "Minor", suit: "Inus", rank: "6",    name: "6 of Inus",  meaning: "A comeback—coordinated marketing or exploit patch, hype reborn." },
+      { arcana: "Minor", suit: "Inus", rank: "7",    name: "7 of Inus",  meaning: "Rampant speculation or cunning hustle—some wagging tails, some traps." },
+      { arcana: "Minor", suit: "Inus", rank: "8",    name: "8 of Inus",  meaning: "Sudden listing or random Elon tweet—chart may go ballistic." },
+      { arcana: "Minor", suit: "Inus", rank: "9",    name: "9 of Inus",  meaning: "Pride of the meme army—barking to the moon, for better or worse." },
+      { arcana: "Minor", suit: "Inus", rank: "10",   name: "10 of Inus", meaning: "Final mania—once big wallets rotate out, you’re left howling alone." },
+      { arcana: "Minor", suit: "Inus", rank: "Page", name: "Page of Inus",meaning: "A wide-eyed dev, probably sincere but out of depth." },
+      { arcana: "Minor", suit: "Inus", rank: "Knight", name: "Knight of Inus",meaning: "A fierce meme crusader, half unstoppable, half delusional." },
+      { arcana: "Minor", suit: "Inus", rank: "Queen", name: "Queen of Inus",meaning: "A charismatic ring-leader, can rally or manipulate the entire dog pack." },
+      { arcana: "Minor", suit: "Inus", rank: "King",  name: "King of Inus", meaning: "Overlord of dog coins—commands loyalty until moving on to the next big meme." },
+
+      /* SUIT OF PUMPS (14) */
+      { arcana: "Minor", suit: "Pumps", rank: "Ace",  name: "Ace of Pumps", meaning: "Fresh liquidity injection—might ignite the rocket or be a quick fakeout." },
+      { arcana: "Minor", suit: "Pumps", rank: "2",    name: "2 of Pumps",  meaning: "Two whales quietly colluding to inflate the chart; you might profit or get trapped." },
+      { arcana: "Minor", suit: "Pumps", rank: "3",    name: "3 of Pumps",  meaning: "Mass FOMO triggers unstoppable green candles... until it doesn’t." },
+      { arcana: "Minor", suit: "Pumps", rank: "4",    name: "4 of Pumps",  meaning: "A stable uptrend, but blink and you’ll miss the inevitable dump." },
+      { arcana: "Minor", suit: "Pumps", rank: "5",    name: "5 of Pumps",  meaning: "Whales test diamond hands with abrupt shakeouts—don’t puke your bags too soon." },
+      { arcana: "Minor", suit: "Pumps", rank: "6",    name: "6 of Pumps",  meaning: "Strut around like a champ, but keep an eye on that chart." },
+      { arcana: "Minor", suit: "Pumps", rank: "7",    name: "7 of Pumps",  meaning: "Overconfidence—everyone shouting 'unstoppable' is a classic last word." },
+      { arcana: "Minor", suit: "Pumps", rank: "8",    name: "8 of Pumps",  meaning: "Lightning-speed price moves—double your stack or lose half just as fast." },
+      { arcana: "Minor", suit: "Pumps", rank: "9",    name: "9 of Pumps",  meaning: "Euphoria overload—Lambo memes everywhere, danger is near." },
+      { arcana: "Minor", suit: "Pumps", rank: "10",   name: "10 of Pumps", meaning: "Parabolic blow-off top—someone’s about to get rekt, maybe you." },
+      { arcana: "Minor", suit: "Pumps", rank: "Page", name: "Page of Pumps",meaning: "A hype shiller ignoring fundamentals, sees only green dildos." },
+      { arcana: "Minor", suit: "Pumps", rank: "Knight", name: "Knight of Pumps",meaning: "Bold momentum trader, riding wave after wave until the wave smashes him." },
+      { arcana: "Minor", suit: "Pumps", rank: "Queen", name: "Queen of Pumps",meaning: "Strategic manipulator orchestrating upswings with cunning—bow or get left behind." },
+      { arcana: "Minor", suit: "Pumps", rank: "King",  name: "King of Pumps", meaning: "The supreme pump-master whose moves can jolt an entire ecosystem." },
+
+      /* SUIT OF RUGS (14) */
+      { arcana: "Minor", suit: "Rugs", rank: "Ace",   name: "Ace of Rugs",  meaning: "The dev’s first 'upgrade'—your doom in disguise." },
+      { arcana: "Minor", suit: "Rugs", rank: "2",     name: "2 of Rugs",   meaning: "Collusion between shady devs; betrayal thickens in the shadows." },
+      { arcana: "Minor", suit: "Rugs", rank: "3",     name: "3 of Rugs",   meaning: "Early warning signs—low liquidity, dev wallet swelling suspiciously." },
+      { arcana: "Minor", suit: "Rugs", rank: "4",     name: "4 of Rugs",   meaning: "Complacency abounds—nobody suspects the silent rug creeping up." },
+      { arcana: "Minor", suit: "Rugs", rank: "5",     name: "5 of Rugs",   meaning: "One weird announcement and everyone bolts—panic meltdown." },
+      { arcana: "Minor", suit: "Rugs", rank: "6",     name: "6 of Rugs",   meaning: "False calm—price stabilizes just enough to lure new bagholders." },
+      { arcana: "Minor", suit: "Rugs", rank: "7",     name: "7 of Rugs",   meaning: "Multiple layered traps, unstoppable meltdown—blink and you’re rekt." },
+      { arcana: "Minor", suit: "Rugs", rank: "8",     name: "8 of Rugs",   meaning: "Avalanche of sells, fear like wildfire—only bots or insiders escape." },
+      { arcana: "Minor", suit: "Rugs", rank: "9",     name: "9 of Rugs",   meaning: "A living nightmare—token’s down 99%, dev MIA, chat a ghost town." },
+      { arcana: "Minor", suit: "Rugs", rank: "10",    name: "10 of Rugs",  meaning: "Absolute annihilation—no liquidity, no hope, a final 'fuck you'." },
+      { arcana: "Minor", suit: "Rugs", rank: "Page",  name: "Page of Rugs", meaning: "A naive dev or frontman, might not mean harm but screws everyone anyway." },
+      { arcana: "Minor", suit: "Rugs", rank: "Knight",name: "Knight of Rugs",meaning: "Aggressive con artist draining wallets under the 'development' guise." },
+      { arcana: "Minor", suit: "Rugs", rank: "Queen", name: "Queen of Rugs", meaning: "A cunning scammer seducing the entire community with sweet false promises." },
+      { arcana: "Minor", suit: "Rugs", rank: "King",  name: "King of Rugs",  meaning: "The apex predator of scams—charismatic, unstoppable, devastation in his wake." }
+    ];
+
+    /* Random comedic conclusion lines. */
+    const DEGEN_CONCLUSIONS = [
+      "Now go forth and YOLO—just don’t come crying when you get rekt.",
+      "Take these cards seriously at your own peril, degenerate.",
+      "Remember: This is a parody. If you base your trades on this, that’s on you.",
+      "May the doge have mercy on your pathetic positions.",
+      "Don’t say we didn’t warn you, you glorious crypto degenerate.",
+      "If this reading offended you, maybe you’re in the wrong place."
+    ];
+
+    function drawCardsWithQuestion(numCards) {
+      const userQuestion = document.getElementById('userQuestion').value.trim();
+      const deckCopy = [...DEGEN_TAROT_DECK];
+      const drawn = [];
+
+      for (let i = 0; i < numCards; i++) {
+        if (deckCopy.length === 0) break;
+        const randIndex = Math.floor(Math.random() * deckCopy.length);
+        drawn.push(deckCopy.splice(randIndex, 1)[0]);
+      }
+
+      displayResults(userQuestion, drawn);
+    }
+
+    function displayResults(question, cards) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = ""; // clear old results
+
+      // If there's a user question, show it
+      if (question) {
+        const questionEl = document.createElement('div');
+        questionEl.style.marginBottom = "1rem";
+        questionEl.style.fontStyle = "italic";
+        questionEl.style.color = "#ffb3d1";
+        questionEl.textContent = `You asked: "${question}"`;
+        resultsDiv.appendChild(questionEl);
+      }
+
+      // Display each card
+      cards.forEach(card => {
+        const containerEl = document.createElement('div');
+        containerEl.className = "card-container";
+
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card-block';
+
+        // front face
+        const frontEl = document.createElement('div');
+        frontEl.className = 'card-front';
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'card-title';
+        titleEl.textContent = card.name;
+
+        const arcanaEl = document.createElement('div');
+        arcanaEl.className = 'card-arcana';
+        if (card.arcana === 'Major') {
+          arcanaEl.textContent = `Major Degen Arcana (#${card.number})`;
+        } else {
+          arcanaEl.textContent = `Minor Degen Arcana - Suit of ${card.suit} (${card.rank})`;
         }
 
-        let isChatMode = false;
+        const meaningEl = document.createElement('div');
+        meaningEl.className = 'card-meaning';
+        meaningEl.textContent = card.meaning;
 
-        input.addEventListener('keypress', async function(e) {
-            if (e.key === 'Enter') {
-                const command = input.value.trim();
-                input.value = '';
+        frontEl.appendChild(titleEl);
+        frontEl.appendChild(arcanaEl);
+        frontEl.appendChild(meaningEl);
 
-                if (isChatMode) {
-                    output.innerText += `\n> You: ${command}`;
-                    const aiResponse = await fetchAIResponse(command);
-                    output.innerText += `\nMEGA: ${aiResponse}`;
-                } else if (commands[command]) {
-                    if (typeof commands[command] === 'function') {
-                        commands[command]();
-                    } else {
-                        output.innerText += `\n> ${command}\n${commands[command]}`;
-                        if (command === 'exit') {
-                            setTimeout(() => location.reload(), 1000);
-                        }
-                        if (command === 'chat') {
-                            isChatMode = true;
-                        }
-                    }
-                } else {
-                    output.innerText += `\n> ${command}\nCommand not recognized. Type 'help' for a list of commands.`;
-                }
+        // back face
+        const backEl = document.createElement('div');
+        backEl.className = 'card-back';
+        backEl.textContent = "DEGEN";
 
-                output.scrollTop = output.scrollHeight;
-            }
-        });
-    </script>
+        cardEl.appendChild(frontEl);
+        cardEl.appendChild(backEl);
+        containerEl.appendChild(cardEl);
+        resultsDiv.appendChild(containerEl);
+      });
+
+      // Conclusion
+      if (cards.length > 0) {
+        const conclusionEl = document.createElement('div');
+        conclusionEl.className = 'conclusion';
+        const randomConclusion = DEGEN_CONCLUSIONS[Math.floor(Math.random() * DEGEN_CONCLUSIONS.length)];
+
+        if (question) {
+          conclusionEl.textContent = `So, regarding "${question}": ${randomConclusion}`;
+        } else {
+          conclusionEl.textContent = randomConclusion;
+        }
+        resultsDiv.appendChild(conclusionEl);
+      }
+    }
+  </script>
 </body>
 </html>
